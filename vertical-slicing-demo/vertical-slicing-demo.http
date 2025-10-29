@@ -1,0 +1,6 @@
+@vertical_slicing_demo_HostAddress = http://localhost:5042
+
+GET {{vertical_slicing_demo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
