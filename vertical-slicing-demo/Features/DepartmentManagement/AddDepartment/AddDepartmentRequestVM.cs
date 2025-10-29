@@ -11,8 +11,8 @@ namespace vertical_slicing_demo.Features.DepartmentManagement.AddDepartment
         {
             RuleFor(Request => Request.Name)
                 .NotEmpty().WithMessage("Department Name is required.")
-                .MinimumLength(2).WithMessage("Department Name must not exceed 20 characters.")
-                .MaximumLength(20).WithMessage("The department name must be at least 2 characters long.");
+                .MinimumLength(2).WithMessage("The department name must be at least 2 characters long.")
+                .MaximumLength(20).WithMessage("Department Name must not exceed 20 characters.");
 
             RuleFor(Request => Request.Description)
                 .NotEmpty().WithMessage("Department Description is required.")
