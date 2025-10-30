@@ -10,5 +10,6 @@
         NotFound,
         Unauthorized,
         UnknownError,
+        ServerError,
     }
 }

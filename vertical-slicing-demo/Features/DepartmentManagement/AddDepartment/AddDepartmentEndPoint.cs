@@ -20,7 +20,11 @@ namespace vertical_slicing_demo.Features.DepartmentManagement.AddDepartment
                 return resultValidate;
             }
 
-            var result = _mediator.Send(new AddDepartmentCommand(Request.Name, Request.Description));
+            var result = await _mediator.Send(new AddDepartmentCommand(Request.Name, Request.Description));
+            if (!result.IsSuccess)
+            {
+                return EndpointResponse<bool>.Failure(result.errorCode, result.message);
+            }
 
             return EndpointResponse<bool>.Success(true, "Department added successfully.");
 

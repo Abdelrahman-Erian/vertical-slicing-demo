@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using vertical_slicing_demo.Common.BaseHandlers;
 using vertical_slicing_demo.Common.Data.Enum;
 using vertical_slicing_demo.Common.Views;
-using vertical_slicing_demo.Models.Entities;
 using vertical_slicing_demo.Features.DepartmentManagement.GetDepartment;
+using vertical_slicing_demo.Models.Entities;
 
 namespace vertical_slicing_demo.Features.DepartmentManagement.GetDepartment.Query
 {
@@ -16,17 +17,17 @@ namespace vertical_slicing_demo.Features.DepartmentManagement.GetDepartment.Quer
         }
         public override async Task<RequestResult<GetDepartmentResponseDTO>> Handle(GetDepartmentQuery request, CancellationToken cancellationToken)
         {
-            var department = await _repository.GetByIDAsync(request.Id);
-            if (department == null || department.IsDeleted)
+            var department = await _repository.GetAll()
+                .Where(d => d.ID == request.Id)
+                .Select(d => new GetDepartmentResponseDTO(d.Name, d.Description))
+                .FirstOrDefaultAsync();
+
+            if (department is null)
             {
                 return RequestResult<GetDepartmentResponseDTO>.Failure(ErrorCode.NotFound, "Department not found.");
             }
-            var responseDto = new GetDepartmentResponseDTO
-            (
-                Name : department.Name,
-                Description : department.Description
-            );
-            return RequestResult<GetDepartmentResponseDTO>.Success(responseDto, "The Department was successfully found");
+
+            return RequestResult<GetDepartmentResponseDTO>.Success(department, "The Department was successfully found");
         }
     }
 }
